@@ -1,8 +1,8 @@
 {
-    "name": "free-agent/bitter",
+    "name": "snproject/bitter",
     "description": "Bitter is a simple but powerful analytics library",
     "keywords": ["bitter", "analytics", "redis"],
-    "homepage": "https://github.com/jeremyFreeAgent/Bitter",
+    "homepage": "https://github.com/SNProject/Bitter",
     "type": "library",
     "license": "MIT",
     "authors": [
@@ -12,7 +12,7 @@
         }
     ],
     "support": {
-        "issues": "https://github.com/jeremyFreeAgent/Bitter/issues"
+        "issues": "https://github.com/SNProject/Bitter/issues"
     },
     "require": {
         "php": ">=5.3.3",
