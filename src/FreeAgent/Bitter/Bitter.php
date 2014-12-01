@@ -10,6 +10,7 @@ use FreeAgent\Bitter\UnitOfTime\Month;
 use FreeAgent\Bitter\UnitOfTime\Week;
 use FreeAgent\Bitter\UnitOfTime\Day;
 use FreeAgent\Bitter\UnitOfTime\Hour;
+use FreeAgent\Bitter\UnitOfTime\Minute;
 use FreeAgent\Bitter\UnitOfTime\UnitOfTimeInterface;
 
 /**
@@ -69,6 +70,7 @@ class Bitter
             new Week($eventName, $dateTime),
             new Day($eventName, $dateTime),
             new Hour($eventName, $dateTime),
+            new Minute($eventName, $dateTime),
         );
 
         foreach ($eventData as $event) {
@@ -144,6 +146,18 @@ class Bitter
         $to = clone $to;
 
         $this->getRedisClient()->del($this->prefixTempKey . $destKey);
+
+        // Minutes
+        $minutesFrom = DatePeriod::createForMinute($from, $to, DatePeriod::CREATE_FROM);
+        foreach ($minutesFrom as $date) {
+            $this->bitOpOr($destKey, new Hour($key, $date), $destKey);
+        }
+        $minutesTo = DatePeriod::createForMinute($from, $to, DatePeriod::CREATE_TO);
+        if (array_diff($minutesTo->toArray(true), $minutesFrom->toArray(true)) !== array_diff($minutesFrom->toArray(true), $minutesTo->toArray(true))) {
+            foreach ($minutesTo as $date) {
+                $this->bitOpOr($destKey, new Hour($key, $date), $destKey);
+            }
+        }
 
         // Hours
         $hoursFrom = DatePeriod::createForHour($from, $to, DatePeriod::CREATE_FROM);

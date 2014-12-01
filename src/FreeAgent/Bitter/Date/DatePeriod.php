@@ -23,6 +23,28 @@ class DatePeriod extends \DatePeriod
         return $dates;
     }
 
+    public static function createForMinute(DateTime $from, DateTime $to, $fromOrTo = self::CREATE_FROM)
+    {
+        if ($from->format('Y-m-d H') != $to->format('Y-m-d H')) {
+            if (self::CREATE_TO !== $fromOrTo) {
+                $from->setDate($from->format('Y'), $from->format('m'), $from->format('d'));
+                $from->setTime($from->format('H'), $from->format('i'), 0);
+                $to = clone($from);
+                $to->setTime(24, 0, 0);
+            } else {
+                $from = clone($to);
+                $from->setTime(0, 0, 0);
+                $to->setDate($to->format('Y'), $to->format('m'), $to->format('d'));
+                $to->setTime($to->format('H'), $to->format('i'), 0);
+            }
+        } else {
+            $from->setTime($from->format('H'), $from->format('i'), 0);
+            $to->setTime($to->format('H'), $to->format('i'), 0);
+        }
+
+        return new DatePeriod($from, new DateInterval('PT1M'), $to);
+    }
+
     public static function createForHour(DateTime $from, DateTime $to, $fromOrTo = self::CREATE_FROM)
     {
         if ($from->format('Y-m-d') != $to->format('Y-m-d')) {
