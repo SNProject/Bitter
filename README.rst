@@ -170,11 +170,16 @@ You can run tests with:
 
 Release notes
 -------------
+
 1.2.0
 
 * Added a remove method to remove a specific temp key.
 * Added a removeEvent method to remove all data of an event.
 * Renamed Event to UnitOfTime in order to be more explicit.
+
+1.1.1
+
+* Fixed bitDateRange.
 
 1.1.0
 
